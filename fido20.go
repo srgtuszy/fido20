@@ -1,7 +1,6 @@
 package main
 
 import (
-	cbor "bitbucket.org/bodhisnarkva/cbor/go"
 	"bytes"
 	"crypto"
 	"crypto/ecdsa"
@@ -14,6 +13,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	cbor "bitbucket.org/bodhisnarkva/cbor/go"
 	"github.com/google/uuid"
 	"github.com/square/go-jose"
 
@@ -71,7 +72,7 @@ type (
 		Id         string                         `json:"id"`
 		Rp         *PublicKeyCredentialEntity     `json:"rp"`
 		UserEntity *PublicKeyCredentialUserEntity `json:"user"`
-		PrivateKey jose.JsonWebKey                `json:"key"`
+		PrivateKey jose.JSONWebKey                `json:"key"`
 	}
 )
 
@@ -299,7 +300,7 @@ func (b authenticator) open() (Authenticator, error) {
 	return &b, nil
 }
 
-//https://w3c.github.io/webauthn/#authenticator-ops
+// https://w3c.github.io/webauthn/#authenticator-ops
 func (b *authenticator) MakeCredential(rpId string,
 	clientDataHash []byte,
 	relyingParty *PublicKeyCredentialEntity,
@@ -418,7 +419,7 @@ func (a *authenticator) createCredential(rpid string, rp *PublicKeyCredentialEnt
 		idb:        id,
 		Rp:         rp,
 		UserEntity: user,
-		PrivateKey: jose.JsonWebKey{},
+		PrivateKey: jose.JSONWebKey{},
 	}
 
 	if a.approver(cred) {
